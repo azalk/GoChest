@@ -12,6 +12,7 @@ import "github.com/BobuSumisu/aho-corasick"
 import "github.com/gosuri/uiprogress"
 
 const maxDiscreteLevel = 5
+
 var discreteLevel int
 
 var trie []*ahocorasick.Trie
@@ -36,7 +37,7 @@ func max(a, b int) int {
 func getBoundaries(sequenceLength int, alpha float64, t int) []int {
 	output := make([]int, 0)
 
-	nextBound := math.Pow(float64(t + 2), -1) * float64(sequenceLength) * alpha
+	nextBound := math.Pow(float64(t+2), -1) * float64(sequenceLength) * alpha
 	for true {
 		output = append(output, int(nextBound))
 		nextBound += float64(sequenceLength) * alpha
@@ -56,9 +57,9 @@ func getDiscreteLevel(sequence []float64) int {
 	minDif := math.MaxFloat64
 
 	for i := range deltas {
-		if i != len(deltas) - 1 {
-			dif := deltas[i + 1] - deltas[i]
-			if dif != 0 && dif < minDif{
+		if i != len(deltas)-1 {
+			dif := deltas[i+1] - deltas[i]
+			if dif != 0 && dif < minDif {
 				minDif = dif
 			}
 		}
@@ -70,14 +71,14 @@ func getDiscreteLevel(sequence []float64) int {
 func discretizeSequence(sequence []float64, level int) []byte {
 	binMap := make(map[int]struct{})
 	scaledSequence := make([]float64, len(sequence))
-	scalar := math.Pow(2, float64(level + 1))
-	for i, _ := range sequence {
+	scalar := math.Pow(2, float64(level+1))
+	for i := range sequence {
 		scaledSequence[i] = sequence[i] * scalar
 		binMap[int(scaledSequence[i])] = struct{}{}
 	}
 
 	bins := make([]int, 0)
-	for key, _ := range binMap {
+	for key := range binMap {
 		bins = append(bins, key)
 	}
 	sort.Ints(bins)
@@ -85,39 +86,29 @@ func discretizeSequence(sequence []float64, level int) []byte {
 	logBaseByte := math.Log(float64(len(bins))) / math.Log(256)
 	digitCount[level] = int(logBaseByte) + 1
 
-	output := make([]byte, digitCount[level] * len(sequence))
+	output := make([]byte, digitCount[level]*len(sequence))
 	byteSequence := make([]byte, 8)
-	for i, _ := range scaledSequence {
+	for i := range scaledSequence {
 		discreteValue := sort.SearchInts(bins, int(scaledSequence[i]))
 		binary.LittleEndian.PutUint32(byteSequence, uint32(discreteValue))
-		copy(output[i * digitCount[level]:(i + 1) * digitCount[level]], byteSequence[:digitCount[level] + 1])
+		copy(output[i*digitCount[level]:(i+1)*digitCount[level]], byteSequence[:digitCount[level]+1])
 	}
 
 	return output
 }
 
-func byteArrToHash (arr []byte) string {
-	output := ""
-	for _, element := range arr {
-		output += string(element)
-	}
-	return output
-}
-
-func buildTrie(sequence []byte, level int) *ahocorasick.Trie  {
+func buildTrie(sequence []byte, level int) *ahocorasick.Trie {
 	trieBuilder := ahocorasick.NewTrieBuilder()
 
 	maxPatternLen := int(math.Log2(float64(len(sequence)) / float64(digitCount[level])))
 
-	uniquePatterns := make(map[string][]byte)
-
-	for m := 1; m < min(len(sequence) / digitCount[level], maxPatternLen) + 1; m++ {
-		for j := 0; j < len(sequence) - m * digitCount[level] + 1; j += digitCount[level] {
-			trieBuilder.AddPattern(sequence[j : j + m * digitCount[level]])
+	for m := 1; m < min(len(sequence)/digitCount[level], maxPatternLen)+1; m++ {
+		for j := 0; j < len(sequence)-m*digitCount[level]+1; j += digitCount[level] {
+			trieBuilder.AddPattern(sequence[j : j+m*digitCount[level]])
 		}
 	}
 
-	 return trieBuilder.Build()
+	return trieBuilder.Build()
 }
 
 func discreteDistance(level, leftBoundary, midPoint, rightBoundary int) float64 {
@@ -129,64 +120,64 @@ func discreteDistance(level, leftBoundary, midPoint, rightBoundary int) float64 
 	for t := 0; t < 2; t++ {
 		for _, match := range matches[t] {
 			if _, ok := counts[match.MatchString()]; !ok {
-				counts[match.MatchString()] = make([]int, 3)
-				counts[match.MatchString()][2] = len(match.Match()) / digitCount[level]
+				counts[match.MatchString()] = make([]int, 2)
 			}
 			counts[match.MatchString()][t] += 1
 		}
 	}
 
-	fmt.Println(counts)
-	sequenceLength := []int{midPoint - leftBoundary, midPoint - rightBoundary}
+	sequenceLength := []int{midPoint - leftBoundary, rightBoundary - midPoint}
 
 	output := 0.0
-	for _, count := range counts {
-		adjustedCountDifference := float64(count[0]) / float64(sequenceLength[0] - count[2] + 1) - float64(count[1]) / float64(sequenceLength[1] - count[2] + 1)
-		output += math.Abs(adjustedCountDifference) * math.Pow(2, -float64(count[2]))
+	for key, count := range counts {
+		keywordLength := len(key) / digitCount[level]
+
+		adjustedCountDifference := float64(count[0])/float64(sequenceLength[0]-keywordLength+1) - float64(count[1])/float64(sequenceLength[1]-keywordLength+1)
+		output += math.Abs(adjustedCountDifference) * math.Pow(2, -float64(keywordLength))
 	}
 
-	return output * math.Pow(2, -float64(level + 1))
+	return output * math.Pow(2, -float64(level+1))
 }
 
 func getSegmentScores() [][]float64 {
-	segmentCount := discreteLevel * (len(boundaries[0]) - 3) + discreteLevel * (len(boundaries[1]) - 3)
+	segmentCount := discreteLevel*(len(boundaries[0])-3) + discreteLevel*(len(boundaries[1])-3)
 	scores := make([][][]float64, 2)
 	for t := 0; t < 2; t++ {
 		scores[t] = make([][]float64, discreteLevel)
 		for level := 0; level < discreteLevel; level++ {
-			scores[t][level] = make([]float64, len(boundaries[t]) - 3)
+			scores[t][level] = make([]float64, len(boundaries[t])-3)
 		}
 	}
 
 	bar := uiprogress.AddBar(segmentCount).AppendCompleted().PrependFunc(func(b *uiprogress.Bar) string {
 		return "Computing Segment Scores: "
 	})
-	var wg sync.WaitGroup
-	wg.Add(segmentCount)
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(segmentCount)
 	for t := 0; t < 2; t++ {
 		for level := 0; level < discreteLevel; level++ {
-			for boundary := 1; boundary < len(boundaries[t]) - 2; boundary++ {
+			for boundary := 1; boundary < len(boundaries[t])-2; boundary++ {
 				func(t, level, boundary int) {
-					defer wg.Done()
+					defer waitGroup.Done()
 					leftBoundary := boundaries[t][boundary] * digitCount[level]
-					rightBoundary := boundaries[t][boundary + 1] * digitCount[level]
-					midpoint := leftBoundary + int(float64(boundaries[t][boundary + 1] - boundaries[t][boundary]) * 0.5) * digitCount[level]
+					rightBoundary := boundaries[t][boundary+1] * digitCount[level]
+					midpoint := leftBoundary + int(float64(boundaries[t][boundary+1]-boundaries[t][boundary])*0.5)*digitCount[level]
 
-					scores[t][level][boundary - 1] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
+					scores[t][level][boundary-1] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
 					bar.Incr()
-				} (t, level, boundary)
+				}(t, level, boundary)
 			}
 		}
 	}
 
 	output := make([][]float64, 2)
-	output[0] = make([]float64, len(boundaries[0]))
-	output[1] = make([]float64, len(boundaries[1]))
-	wg.Wait()
+	output[0] = make([]float64, len(boundaries[0])-3)
+	output[1] = make([]float64, len(boundaries[1])-3)
+	waitGroup.Wait()
 
 	for t := 0; t < 2; t++ {
 		for level := 0; level < discreteLevel; level++ {
-			for boundary := 0; boundary < len(boundaries[t]) - 3; boundary++ {
+			for boundary := 0; boundary < len(boundaries[t])-3; boundary++ {
 				output[t][boundary] += scores[t][level][boundary]
 			}
 		}
@@ -198,31 +189,32 @@ func getSegmentScores() [][]float64 {
 //export FindChangePoints
 func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 	discreteLevel = min(getDiscreteLevel(sequence), maxDiscreteLevel)
+	fmt.Println(discreteLevel)
 
 	trie = make([]*ahocorasick.Trie, discreteLevel)
 	digitCount = make([]int, discreteLevel)
 	discreteSequence = make([][]byte, discreteLevel)
 	boundaries = make([][]int, 2)
 
-	boundaries[0] = getBoundaries(len(sequence), minimumDistance / 3.0, 0)
-	boundaries[1] = getBoundaries(len(sequence), minimumDistance / 3.0, 1)
+	boundaries[0] = getBoundaries(len(sequence), minimumDistance/3.0, 0)
+	boundaries[1] = getBoundaries(len(sequence), minimumDistance/3.0, 1)
 
 	uiprogress.Start()
 
 	bar := uiprogress.AddBar(discreteLevel).AppendCompleted().PrependFunc(func(b *uiprogress.Bar) string {
 		return "Generating Tries: "
 	})
-	var wg sync.WaitGroup
-	wg.Add(discreteLevel)
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(discreteLevel)
 	for level := 0; level < discreteLevel; level++ {
 		go func(level int) {
-			defer wg.Done()
+			defer waitGroup.Done()
 			discreteSequence[level] = discretizeSequence(sequence, level)
 			trie[level] = buildTrie(discreteSequence[level], level)
 			bar.Incr()
-		} (level)
+		}(level)
 	}
-	wg.Wait()
+	waitGroup.Wait()
 
 	segmentScores := getSegmentScores()
 	changepoints := make([]Changepoint, 0)
@@ -245,8 +237,8 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 
 		changepoints = append(changepoints, Changepoint{segment: index, boundaries: boundaries})
 		for offset := -2; offset < 3; offset++ {
-			if index[1] + offset >= 0 && index[1] + offset < len(boundaries[index[0]]) {
-				segmentScores[index[0]][index[1] + offset] = 0
+			if index[1]+offset >= 0 && index[1]+offset < len(boundaries[index[0]]) {
+				segmentScores[index[0]][index[1]+offset] = 0
 			}
 		}
 	}
@@ -255,7 +247,7 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 	bar = uiprogress.AddBar(segmentLength * discreteLevel * len(changepoints)).AppendCompleted().PrependFunc(func(b *uiprogress.Bar) string {
 		return "Finding Exact Changepoints: "
 	})
-	wg.Add(segmentLength * discreteLevel * len(changepoints))
+	waitGroup.Add(segmentLength * discreteLevel * len(changepoints))
 
 	exactChangepointsScores := make([][][]float64, len(changepoints))
 	for i, changepoint := range changepoints {
@@ -266,17 +258,17 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 
 			for level := 0; level < discreteLevel; level++ {
 				go func(i, j, level int) {
-					defer wg.Done()
+					defer waitGroup.Done()
 					leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(j, digitCount[level])
-					exactChangepointsScores[i][j][level] = discreteDistance(level,leftBoundary, midpoint, rightBoundary)
+					exactChangepointsScores[i][j][level] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
 					bar.Incr()
 				}(i, j, level)
 			}
 		}
 	}
-	wg.Wait()
+	waitGroup.Wait()
 
-	for i, _ := range changepoints {
+	for i := range changepoints {
 		(&changepoints[i]).findExactChangepoint(exactChangepointsScores[i])
 	}
 
@@ -286,7 +278,7 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 	for _, changepoint := range changepoints {
 		tooClose := false
 		for _, alreadyPresent := range output {
-			if math.Abs(float64(changepoint.exactPosition - alreadyPresent)) < minimumDistance * float64(len(sequence)) {
+			if math.Abs(float64(changepoint.exactPosition-alreadyPresent)) < minimumDistance*float64(len(sequence)) {
 				tooClose = true
 				break
 			}
