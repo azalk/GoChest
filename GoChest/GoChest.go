@@ -1,6 +1,5 @@
-package main
+package GoChest
 
-import "C"
 import (
 	"encoding/binary"
 	"fmt"
@@ -186,10 +185,8 @@ func getSegmentScores() [][]float64 {
 	return output
 }
 
-//export FindChangePoints
-func FindChangePoints(sequence []float64, minimumDistance float64) int {
+func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 	discreteLevel = min(getDiscreteLevel(sequence), maxDiscreteLevel)
-	fmt.Println(discreteLevel)
 
 	trie = make([]*ahocorasick.Trie, discreteLevel)
 	digitCount = make([]int, discreteLevel)
@@ -288,8 +285,8 @@ func FindChangePoints(sequence []float64, minimumDistance float64) int {
 			output = append(output, changepoint.exactPosition)
 		}
 	}
-
-	return output[0]
+	
+	return output
 }
 
 func main() {

@@ -1,4 +1,4 @@
-package main
+package GoChest
 
 type Changepoint struct {
 	segment []int

@@ -1,8 +1,8 @@
 from setuptools import setup, Extension
 
 main_module = Extension("GoChest",
-                        sources=["GoChest.c"],
-                        libraries=["GoChest", "python3.8"],
+                        sources=["GoChest.cpp"],
+                        libraries=["python3.8"],
                         library_dirs=[".", "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/config-3.8-darwin"],
                         )
 
