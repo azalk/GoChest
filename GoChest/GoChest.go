@@ -285,7 +285,7 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 			output = append(output, changepoint.exactPosition)
 		}
 	}
-	
+
 	return output
 }
 

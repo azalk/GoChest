@@ -17,7 +17,7 @@ def find_changepoints(sequence, minimum_distance):
 
     changepoints = lib.FindChangepoints(double_array, c_length, c_minimum_distance)
 
-    time.sleep(0.1)
+    time.sleep(1)
 
     print("chpts")
 
