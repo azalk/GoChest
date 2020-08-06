@@ -1,10 +1,5 @@
-from setuptools import setup, Extension
-
-main_module = Extension("GoChest",
-                        sources=["GoChest.cpp"],
-                        libraries=["python3.8"],
-                        library_dirs=[".", "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/config-3.8-darwin"],
-                        )
+from setuptools import setup
+from Cython.Build import cythonize
 
 setup(
     name="GoChest",
@@ -15,8 +10,8 @@ setup(
     author_email="lukas@kappa-mm.de",
     url="",
     download_url="",
-    keywords=["Changepoint Estimation", "Dependent Data", "Unkown Number of Change Points"],
-    install_requires=["pybindgen", ],
+    keywords=["Changepoint Estimation", "Dependent Data", "Unknown Number of Change Points"],
+    install_requires=["setuptools", "Cython"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -24,6 +19,7 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
     ],
-    ext_modules=[main_module],
-    package_data={"": ["libGoChest.so"]}
+    ext_modules=cythonize("GoChest.pyx"),
+    package_data={'': ['GoChest.so']},
+    include_package_data=True
 )
