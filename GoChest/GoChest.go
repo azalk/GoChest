@@ -99,7 +99,7 @@ func discretizeSequence(sequence []float64, level int) []byte {
 func buildTrie(sequence []byte, level int) *ahocorasick.Trie {
 	trieBuilder := ahocorasick.NewTrieBuilder()
 
-	maxPatternLen := int(math.Log2(float64(len(sequence)) / float64(digitCount[level])))
+	maxPatternLen := int(math.Log(float64(len(sequence)) / float64(digitCount[level])))
 
 	for m := 1; m < min(len(sequence)/digitCount[level], maxPatternLen)+1; m++ {
 		for j := 0; j < len(sequence)-m*digitCount[level]+1; j += digitCount[level] {
@@ -133,11 +133,7 @@ func discreteDistance(level, leftBoundary, midPoint, rightBoundary int) float64 
 		keywordLength := len(key) / digitCount[level]
 
 		for i := 0; i < 2; i++ {
-			if sequenceLength[i]-keywordLength+1 <= 0 {
-				frequencies[i] = 0
-			} else {
-				frequencies[i] = float64(count[i]) / float64(sequenceLength[i]-keywordLength+1)
-			}
+			frequencies[i] = float64(count[i]) / float64(sequenceLength[i]-keywordLength+1)
 		}
 
 		adjustedCountDifference := math.Abs(frequencies[0] - frequencies[1])
