@@ -175,14 +175,14 @@ func getSegmentScores() [][]float64 {
 	bar.Finish()
 
 	output := make([][]float64, 2)
-	output[0] = make([]float64, len(boundaries[0])-3)
-	output[1] = make([]float64, len(boundaries[1])-3)
+	output[0] = make([]float64, len(boundaries[0])-1)
+	output[1] = make([]float64, len(boundaries[1])-1)
 	waitGroup.Wait()
 
 	for t := 0; t < 2; t++ {
 		for level := 0; level < discreteLevel; level++ {
 			for boundary := 0; boundary < len(boundaries[t])-3; boundary++ {
-				output[t][boundary] += scores[t][level][boundary]
+				output[t][boundary+1] += scores[t][level][boundary]
 			}
 		}
 	}
@@ -226,7 +226,7 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 			for i, score := range segmentScores[t] {
 				if score > maxScore {
 					maxScore = score
-					index = []int{t, i + 1}
+					index = []int{t, i}
 				}
 			}
 		}
@@ -236,8 +236,11 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 		}
 
 		changepoints = append(changepoints, Changepoint{segment: index, boundaries: boundaries})
+
+		// Wherever the Changepoint is in this segment, it cannot be in the two segment immediately left or right to it so we dont consider those
+		// This follows as every segment is minimumDistance/3 long
 		for offset := -2; offset < 3; offset++ {
-			if index[1]+offset >= 0 && index[1]+offset < len(boundaries[index[0]])-3 {
+			if index[1]+offset >= 0 && index[1]+offset < len(boundaries[index[0]])-1 {
 				segmentScores[index[0]][index[1]+offset] = 0
 			}
 		}
@@ -255,12 +258,12 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 			exactChangepointsScores[i][j] = make([]float64, discreteLevel)
 
 			for level := 0; level < discreteLevel; level++ {
-				go func(i, j, level int) {
+				leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(j, digitCount[level])
+				go func(i, j, level, leftBoundary, midpoint, rightBoundary int) {
 					defer waitGroup.Done()
-					leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(j, digitCount[level])
 					exactChangepointsScores[i][j][level] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
 					bar.Increment()
-				}(i, j, level)
+				}(i, j, level, leftBoundary, midpoint, rightBoundary)
 			}
 		}
 	}
@@ -274,7 +277,10 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 
 	output := make([]int, 1)
 	output[0] = changepoints[0].exactPosition
-	fmt.Println(changepoints[0].segment)
+
+	for _, chpt := range changepoints {
+		fmt.Println(chpt.segment, chpt.exactPosition)
+	}
 
 	for _, changepoint := range changepoints {
 		tooClose := false

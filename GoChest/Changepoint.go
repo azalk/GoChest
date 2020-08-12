@@ -1,13 +1,13 @@
 package GoChest
 
 type Changepoint struct {
-	segment []int
-	boundaries [][]int
+	segment       []int
+	boundaries    [][]int
 	exactPosition int
 }
 
 func (changepoint Changepoint) getBoundary(indexOffset int) int {
-	return changepoint.boundaries[changepoint.segment[0]][changepoint.segment[1] + indexOffset]
+	return changepoint.boundaries[changepoint.segment[0]][changepoint.segment[1]+indexOffset]
 }
 
 func (changepoint Changepoint) getSegmentLength() int {
@@ -17,7 +17,7 @@ func (changepoint Changepoint) getSegmentLength() int {
 func (changepoint Changepoint) getLeftMidpointRight(index int, digitCount int) (int, int, int) {
 	leftBoundary := changepoint.getBoundary(-1) * digitCount
 	rightBoundary := changepoint.getBoundary(2) * digitCount
-	midpoint := leftBoundary + (index * digitCount)
+	midpoint := (changepoint.getBoundary(0) + index) * digitCount
 
 	return leftBoundary, midpoint, rightBoundary
 }
@@ -26,8 +26,8 @@ func (changepoint *Changepoint) findExactChangepoint(scoresArr [][]float64) {
 	maxScore := 0.0
 	for i, scores := range scoresArr {
 		score := 0.0
-		for _, subscore := range scores {
-			score += subscore
+		for _, subScore := range scores {
+			score += subScore
 		}
 
 		if score > maxScore {
