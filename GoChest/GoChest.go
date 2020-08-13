@@ -125,7 +125,7 @@ func discreteDistance(level, leftBoundary, midPoint, rightBoundary int) float64 
 		}
 	}
 
-	sequenceLength := []int{midPoint - leftBoundary, rightBoundary - midPoint}
+	sequenceLength := []int{(midPoint - leftBoundary) / digitCount[level], (rightBoundary - midPoint) / digitCount[level]}
 
 	output := 0.0
 	frequencies := make([]float64, 2)
