@@ -3,9 +3,10 @@
 from libc.stdint cimport uintptr_t
 import ctypes
 import os
+from PyChestBuild.identify import get_lib_name
 
 resource_package = os.path.dirname(__file__)
-resource_path = 'GoChest.so'
+resource_path = "PyChestBuild/" + get_lib_name()
 
 
 lib = ctypes.cdll.LoadLibrary(os.path.join(resource_package, resource_path))

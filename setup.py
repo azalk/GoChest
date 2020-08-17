@@ -1,8 +1,13 @@
-from setuptools import setup
+from setuptools import setup, Extension
 from Cython.Build import cythonize
+from PyChestBuild.identify import get_lib_name
+
+extensions = [
+    Extension("PyChest", ["PyChest/PyChest.pyx"])
+]
 
 setup(
-    name="GoChest",
+    name="PyChest",
     version="0.51",
     license="bsd-3-clause",
     description="Locating Changes in Highly Dependent Data with Unknown Number of Change Points",
@@ -19,7 +24,7 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
     ],
-    ext_modules=cythonize("GoChest.pyx"),
-    package_data={'': ['GoChest.so']},
-    include_package_data=True
+    ext_modules=cythonize(extensions),
+    packages=['PyChestBuild'],
+    package_data={'PyChestBuild': [get_lib_name()]},
 )
