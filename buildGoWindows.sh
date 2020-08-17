@@ -8,7 +8,7 @@ ARCHS=(
 for i in "${ARCHS[@]}"; do
   readarray -d . -t ARCH <<<"$i"
 
-  CGO_CFLAGS="-g -O2 -w" CGO_ENABLED=1 GOOS="${ARCH[0]}" GOARCH="${ARCH[1]}" go build -buildmode=c-shared -o GoBuild/"GoChest.""$i" CWrapper.go
+  CGO_CFLAGS="-g -O2 -w" CGO_ENABLED=1 GOOS="${ARCH[0]}" GOARCH="${ARCH[1]}" go build -buildmode=c-shared -o PyChestBuild/"GoChest.""$i" CWrapper.go
 done
 
 git add PyChestBuild/*.so

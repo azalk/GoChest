@@ -2,7 +2,6 @@ package GoChest
 
 import (
 	"encoding/binary"
-	"fmt"
 	"math"
 	"sort"
 	"sync"
@@ -258,7 +257,9 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 			exactChangepointsScores[i][j] = make([]float64, discreteLevel)
 
 			for level := 0; level < discreteLevel; level++ {
+
 				leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(j, digitCount[level])
+
 				go func(i, j, level, leftBoundary, midpoint, rightBoundary int) {
 					defer waitGroup.Done()
 					exactChangepointsScores[i][j][level] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
@@ -277,10 +278,6 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 
 	output := make([]int, 1)
 	output[0] = changepoints[0].exactPosition
-
-	for _, chpt := range changepoints {
-		fmt.Println(chpt.segment, chpt.exactPosition)
-	}
 
 	for _, changepoint := range changepoints {
 		tooClose := false
