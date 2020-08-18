@@ -1,13 +1,13 @@
 from setuptools import setup, Extension
+from Cython.Build import cythonize
+from PyChestBuild.identify import get_lib_name
 
-main_module = Extension("GoChest",
-                        sources=["GoChest.c"],
-                        libraries=["GoChest", "python3.8"],
-                        library_dirs=[".", "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/config-3.8-darwin"],
-                        )
+extensions = [
+    Extension("PyChest", ["PyChest/PyChest.pyx"])
+]
 
 setup(
-    name="GoChest",
+    name="PyChest",
     version="0.51",
     license="bsd-3-clause",
     description="Locating Changes in Highly Dependent Data with Unknown Number of Change Points",
@@ -15,8 +15,8 @@ setup(
     author_email="lukas@kappa-mm.de",
     url="",
     download_url="",
-    keywords=["Changepoint Estimation", "Dependent Data", "Unkown Number of Change Points"],
-    install_requires=["pybindgen", ],
+    keywords=["Changepoint Estimation", "Dependent Data", "Unknown Number of Change Points"],
+    install_requires=["setuptools", "Cython"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -24,6 +24,7 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
     ],
-    ext_modules=[main_module],
-    package_data={"": ["libGoChest.so"]}
+    ext_modules=cythonize(extensions),
+    packages=['PyChestBuild'],
+    package_data={'PyChestBuild': [get_lib_name()]},
 )
