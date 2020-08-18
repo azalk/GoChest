@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ARCHS=(
-  "darwin.386.so"
   "darwin.amd64.so"
 )
 
