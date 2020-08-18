@@ -14,7 +14,4 @@ for i in "${ARCHS[@]}"; do
 done
 
 git add PyChestBuild/*.so
-git add PyChestBuild/*.dll
 
-git commit -m "precompiled libraries"
-git push
