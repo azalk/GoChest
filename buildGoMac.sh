@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ARCHS=(
-  "linux.386.so"
-  "linux.amd64.so"
+  "darwin.386.so"
+  "darwin.amd64.so"
 )
 
 for i in "${ARCHS[@]}"; do
