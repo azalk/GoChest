@@ -153,6 +153,7 @@ func getSegmentScores() [][]float64 {
 	}
 
 	bar := pb.New(segmentCount).Prefix("Computing Segment Scores: ")
+	bar.AlwaysUpdate = true
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(segmentCount)
 	for t := 0; t < 2; t++ {
@@ -170,13 +171,14 @@ func getSegmentScores() [][]float64 {
 			}
 		}
 	}
-	bar.Set(segmentCount)
-	bar.Finish()
 
 	output := make([][]float64, 2)
 	output[0] = make([]float64, len(boundaries[0])-1)
 	output[1] = make([]float64, len(boundaries[1])-1)
+
 	waitGroup.Wait()
+	bar.Set(segmentCount)
+	bar.Finish()
 
 	for t := 0; t < 2; t++ {
 		for level := 0; level < discreteLevel; level++ {
@@ -201,6 +203,7 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 	boundaries[1] = getBoundaries(len(sequence), minimumDistance/3.0, 1)
 
 	bar := pb.New(discreteLevel).Prefix("Generating Tries: ")
+	bar.AlwaysUpdate = true
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(discreteLevel)
 	for level := 0; level < discreteLevel; level++ {
@@ -211,9 +214,9 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 			bar.Increment()
 		}(level)
 	}
+	waitGroup.Wait()
 	bar.Set(discreteLevel)
 	bar.Finish()
-	waitGroup.Wait()
 
 	segmentScores := getSegmentScores()
 	changepoints := make([]Changepoint, 0)
@@ -247,34 +250,33 @@ func FindChangePoints(sequence []float64, minimumDistance float64) []int {
 
 	segmentLength := changepoints[0].getSegmentLength()
 	bar = pb.New(segmentLength * discreteLevel * len(changepoints)).Prefix("Finding Exact Changepoints: ")
-	waitGroup.Add(segmentLength * discreteLevel * len(changepoints))
+	bar.AlwaysUpdate = true
 
-	exactChangepointsScores := make([][][]float64, len(changepoints))
-	for i, changepoint := range changepoints {
-		exactChangepointsScores[i] = make([][]float64, segmentLength)
+	exactChangepointsScores := make([][]float64, segmentLength)
+	for _, changepoint := range changepoints {
+		waitGroup.Add(segmentLength * discreteLevel)
 
-		for j := 0; j < segmentLength; j++ {
-			exactChangepointsScores[i][j] = make([]float64, discreteLevel)
+		for i := 0; i < segmentLength; i++ {
+			exactChangepointsScores[i] = make([]float64, discreteLevel)
 
 			for level := 0; level < discreteLevel; level++ {
 
-				leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(j, digitCount[level])
+				leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(i, digitCount[level])
 
-				go func(i, j, level, leftBoundary, midpoint, rightBoundary int) {
+				go func(i, level, leftBoundary, midpoint, rightBoundary int) {
 					defer waitGroup.Done()
-					exactChangepointsScores[i][j][level] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
+					exactChangepointsScores[i][level] = discreteDistance(level, leftBoundary, midpoint, rightBoundary)
 					bar.Increment()
-				}(i, j, level, leftBoundary, midpoint, rightBoundary)
+				}(i, level, leftBoundary, midpoint, rightBoundary)
 			}
 		}
+
+		waitGroup.Wait()
+		(&changepoint).findExactChangepoint(exactChangepointsScores)
 	}
+
 	bar.Set(segmentLength * discreteLevel * len(changepoints))
 	bar.Finish()
-	waitGroup.Wait()
-
-	for i := range changepoints {
-		(&changepoints[i]).findExactChangepoint(exactChangepointsScores[i])
-	}
 
 	output := make([]int, 1)
 	output[0] = changepoints[0].exactPosition
