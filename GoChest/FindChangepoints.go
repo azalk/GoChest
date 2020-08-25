@@ -53,21 +53,26 @@ func getDistance(segment1, segment2 int) float64 {
 }
 
 func FindChangepoints(sequence []float64, minimumDistance float64, processCount int) []int {
-	changepoints = ListEstimator(sequence, minimumDistance)
-	sort.Ints(changepoints)
 	sequenceLength = len(sequence)
 
-	clusterCenter := make([]int, processCount)
+	changepoints = ListEstimator(sequence, minimumDistance)
+	sort.Ints(changepoints)
+
+	if processCount >= len(changepoints) {
+		return changepoints
+	}
+
+	clusterCenter := make([]int, 1)
 	// While the next line is redundant because of the 0 initialisation of Go,
 	// it is here to emphasize that the clustering algorithm always starts with the first segment as first cluster
 	clusterCenter[0] = 0
 
-	for len(clusterCenter) < processCount && len(clusterCenter) != len(changepoints) {
+	for len(clusterCenter) < processCount {
 		maxDistance := 0.0
 		index := 0
 
 		// We iterate over all segments
-		for i := 0; i < len(changepoints)+2; i++ {
+		for i := 0; i < len(changepoints)+1; i++ {
 
 			// We look for the smallest distance of that segment to any cluster center
 			minDistance := math.MaxFloat64
@@ -92,14 +97,15 @@ func FindChangepoints(sequence []float64, minimumDistance float64, processCount 
 	}
 
 	// Determining the cluster each segment belongs to
-	clusters := make([]int, len(changepoints)+2)
-	for i := 0; i < len(changepoints)+2; i++ {
+	clusters := make([]int, len(changepoints)+1)
+	for i := 0; i < len(changepoints)+1; i++ {
 		minDistance := math.MaxFloat64
 
 		for _, centerPosition := range clusterCenter {
 			distance := getDistance(i, centerPosition)
 
 			if distance < minDistance {
+				minDistance = distance
 				clusters[i] = centerPosition
 			}
 		}

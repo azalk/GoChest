@@ -118,7 +118,7 @@ func ListEstimator(sequence []float64, minimumDistance float64) []int {
 	bar.AlwaysUpdate = true
 
 	exactChangepointsScores := make([][]float64, segmentLength)
-	for _, changepoint := range changepoints {
+	for changepointIndex, changepoint := range changepoints {
 		waitGroup.Add(segmentLength * discreteLevel)
 
 		for i := 0; i < segmentLength; i++ {
@@ -137,7 +137,7 @@ func ListEstimator(sequence []float64, minimumDistance float64) []int {
 		}
 
 		waitGroup.Wait()
-		(&changepoint).findExactChangepoint(exactChangepointsScores)
+		(&changepoints[changepointIndex]).findExactChangepoint(exactChangepointsScores)
 	}
 
 	bar.Set(segmentLength * discreteLevel * len(changepoints))
