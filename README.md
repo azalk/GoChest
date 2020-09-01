@@ -52,7 +52,7 @@ import (
     "github.com/LukasZierahn/GoChest/GoChest"
 )
 func main() {
-	sequence := make([]float64, 0)
+    sequence := make([]float64, 0)
 
     // fill sequence somehow
 
@@ -70,7 +70,7 @@ import (
 )
 
 func main() {
-	sequence := make([]float64, 0)
+    sequence := make([]float64, 0)
 
     // fill sequence somehow
 
