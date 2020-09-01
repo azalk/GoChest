@@ -1,6 +1,18 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 from PyChestBuild.identify import get_lib_name
+import os
+
+library_path = get_lib_name()
+
+# If the user has compiled their own shared library, then we are using that one
+if os.path.isfile("PyChestBuild/GoChest.so"):
+    library_path = "GoChest.so"
+    print("Using found GoChest.so over precompiled libraries")
+
+if os.path.isfile("PyChestBuild/GoChest.dll"):
+    library_path = "GoChest.dll"
+    print("Using found GoChest.dll over precompiled libraries")
 
 extensions = [
     Extension("PyChest", ["PyChest/PyChest.pyx"])
@@ -26,5 +38,5 @@ setup(
     ],
     ext_modules=cythonize(extensions),
     packages=['PyChestBuild'],
-    package_data={'PyChestBuild': [get_lib_name()]},
+    package_data={'PyChestBuild': [library_path]},
 )
