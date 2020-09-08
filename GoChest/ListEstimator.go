@@ -56,8 +56,9 @@ func getSegmentScores() [][]float64 {
 	return output
 }
 
-func ListEstimator(sequence []float64, minimumDistance float64) []int {
+func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp int) []int {
 	discreteLevel = min(getDiscreteLevel(sequence), maxDiscreteLevel)
+	wordLength = wordLengthInp
 
 	trie = make([]*ahocorasick.Trie, discreteLevel)
 	digitCount = make([]int, discreteLevel)

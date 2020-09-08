@@ -1,6 +1,7 @@
 package GoChest
 
 import (
+	"golang.org/x/sys/windows"
 	"math"
 	"sort"
 	"strconv"
@@ -52,10 +53,10 @@ func getDistance(segment1, segment2 int) float64 {
 
 }
 
-func FindChangepoints(sequence []float64, minimumDistance float64, processCount int) []int {
+func FindChangepoints(sequence []float64, minimumDistance float64, processCount int, wordlength int) []int {
 	sequenceLength = len(sequence)
 
-	changepoints = ListEstimator(sequence, minimumDistance)
+	changepoints = ListEstimator(sequence, minimumDistance, wordlength)
 	sort.Ints(changepoints)
 
 	if processCount >= len(changepoints) {
