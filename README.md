@@ -90,9 +90,13 @@ Now `estimates` is a slice of changepoints at least `0.03 * len(sequence)` apart
 
 ## How to cite
 
-If you use this package, please cite the following paper:
+If you use this package, please cite the following papers:
 
-Locating changes in highly-dependent data with an unknown number of change-points. / Khaleghi, Azedeh; Ryabko, Daniil. Advances in Neural Information Processing Systems 25 (NIPS 2012). ed. / F. Pereira; C. J. C. Burges; L. Bottou; K. Q. Weinberger. 2012. p. 1-9.[paper](http://www.research.lancs.ac.uk/portal/en/publications/locating-changes-in-highlydependent-data-with-an-unknown-number-of-changepoints(d3d73e50-1c3d-46b0-9a3b-7516f76c74b3).html)
+ - A. Khaleghi, D. Ryabko, Asymptotically Consistent Estimation of the Number of Change Points in Highly Dependent Time Series In Proceedings of the International Conference on Machine Learning, 2014.
+
+ - A. Khaleghi, D. Ryabko, Locating Changes in Highly-Dependent Data with an Unknown Number of Change-Points, In Proceedings of Neural Information Processing Systems, 2012.
+
+
 
 ## Appendix
 ### Compiling the Go code
