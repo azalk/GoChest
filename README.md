@@ -1,6 +1,13 @@
-# Locating Changes in Highly Dependent Data with Unknown Number of Change Points
+# Locating distributional changes in piece-wise stationary time-series with long-range dependencies
 
-An implementation of the algorithm outlined in the [paper](http://www.research.lancs.ac.uk/portal/en/publications/locating-changes-in-highlydependent-data-with-an-unknown-number-of-changepoints(d3d73e50-1c3d-46b0-9a3b-7516f76c74b3).html) with the same name by Azadeh Khaleghi and Daniil Ryabko written in Go and distributed in [Go](#go) and [Python](#python).
+Implementations of the algorithms proposed in the following two papers.
+
+ - A. Khaleghi, D. Ryabko, Asymptotically Consistent Estimation of the Number of Change Points in Highly Dependent Time Series In Proceedings of the International Conference on Machine Learning, 2014.
+
+ - A. Khaleghi, D. Ryabko, Locating Changes in Highly-Dependent Data with an Unknown Number of Change-Points, In Proceedings of Neural Information Processing Systems, 2012.
+
+
+written in Go and distributed in [Go](#go) and [Python](#python).
 
 
 ## Python
