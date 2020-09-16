@@ -26,9 +26,9 @@ func getSegmentScores() [][]float64 {
 			for boundary := 1; boundary < len(boundaries[t])-2; boundary++ {
 				func(t, level, boundary int) {
 					defer waitGroup.Done()
-					leftBoundary := boundaries[t][boundary] * digitCount[level]
-					rightBoundary := boundaries[t][boundary+1] * digitCount[level]
-					midpoint := leftBoundary + int(float64(boundaries[t][boundary+1]-boundaries[t][boundary])*0.5)*digitCount[level]
+					leftBoundary := boundaries[t][boundary]
+					rightBoundary := boundaries[t][boundary+1]
+					midpoint := leftBoundary + int(float64(boundaries[t][boundary+1]-boundaries[t][boundary])*0.5)
 
 					scores[t][level][boundary-1] = discreteDistanceMidpoint(level, leftBoundary, midpoint, rightBoundary)
 					bar.Increment()
@@ -57,6 +57,7 @@ func getSegmentScores() [][]float64 {
 }
 
 func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp int) []int {
+	// We are setting the global variables defined in GoChest.go
 	discreteLevel = min(getDiscreteLevel(sequence), maxDiscreteLevel)
 	wordLength = wordLengthInp
 
@@ -65,8 +66,8 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 	discreteSequence = make([][]byte, discreteLevel)
 	boundaries = make([][]int, 2)
 
-	boundaries[0] = getBoundaries(len(sequence), minimumDistance/3.0, 0)
-	boundaries[1] = getBoundaries(len(sequence), minimumDistance/3.0, 1)
+	boundaries[0] = getBoundaries(len(sequence) / wordLength, minimumDistance/3.0, 0)
+	boundaries[1] = getBoundaries(len(sequence) / wordLength, minimumDistance/3.0, 1)
 
 	bar := pb.New(discreteLevel).Prefix("Generating Tries: ")
 	bar.AlwaysUpdate = true
@@ -85,6 +86,7 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 	bar.Finish()
 
 	segmentScores := getSegmentScores()
+	// fmt.Println(segmentScores)
 	changepoints := make([]Changepoint, 0)
 
 	for true {
@@ -107,9 +109,21 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 
 		// Wherever the Changepoint is in this segment, it cannot be in the two segment immediately left or right to it so we dont consider those
 		// This follows as every segment is minimumDistance/3 long
-		for offset := -2; offset < 3; offset++ {
+		for offset := -2; offset <= 2; offset++ {
 			if index[1]+offset >= 0 && index[1]+offset < len(boundaries[index[0]])-1 {
 				segmentScores[index[0]][index[1]+offset] = 0
+			}
+		}
+
+		// Same logic applies to 3 segments that are in the other set of boundaries
+		for offset := -1 - index[0] ; offset <=  1 - index[0]; offset++ {
+			otherIndex := 0
+			if index[0] == 0 {
+				otherIndex = 1
+			}
+
+			if index[1]+offset >= 0 && index[1]+offset < len(boundaries[otherIndex])-1 {
+				segmentScores[otherIndex][index[1]+offset] = 0
 			}
 		}
 	}
@@ -127,7 +141,7 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 
 			for level := 0; level < discreteLevel; level++ {
 
-				leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(i, digitCount[level])
+				leftBoundary, midpoint, rightBoundary := changepoint.getLeftMidpointRight(i)
 
 				go func(i, level, leftBoundary, midpoint, rightBoundary int) {
 					defer waitGroup.Done()

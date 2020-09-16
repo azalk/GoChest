@@ -2,8 +2,8 @@ package main
 
 import "C"
 import (
-	"./GoChest"
 	"encoding/binary"
+	"./GoChest"
 	"math"
 	"unsafe"
 )
@@ -21,7 +21,7 @@ func ListEstimator(inpSequence unsafe.Pointer, inpLength C.int, inpMinimumDistan
 		goSequence[i/8] = math.Float64frombits(bits)
 	}
 
-	changepoints := GoChest.ListEstimator(goSequence, minimumDistance)
+	changepoints := GoChest.ListEstimator(goSequence, minimumDistance, 1)
 
 	// First value of the output is the length of the array
 	output := make([]byte, (len(changepoints)+1)*8)
@@ -49,7 +49,7 @@ func FindChangepoints(inpSequence unsafe.Pointer, inpLength C.int, inpMinimumDis
 		goSequence[i/8] = math.Float64frombits(bits)
 	}
 
-	changepoints := GoChest.FindChangepoints(goSequence, minimumDistance, processCount)
+	changepoints := GoChest.FindChangepoints(goSequence, minimumDistance, processCount, 1)
 
 	// First value of the output is the length of the array
 	output := make([]byte, (len(changepoints)+1)*8)

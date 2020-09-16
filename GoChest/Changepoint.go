@@ -6,18 +6,21 @@ type Changepoint struct {
 	exactPosition int
 }
 
+// indexOffset here is an offset of boundaries which are element indexed
 func (changepoint Changepoint) getBoundary(indexOffset int) int {
 	return changepoint.boundaries[changepoint.segment[0]][changepoint.segment[1]+indexOffset]
 }
 
+// gets the segment length in elements
 func (changepoint Changepoint) getSegmentLength() int {
 	return changepoint.getBoundary(1) - changepoint.getBoundary(0)
 }
 
-func (changepoint Changepoint) getLeftMidpointRight(index int, digitCount int) (int, int, int) {
-	leftBoundary := changepoint.getBoundary(-1) * digitCount
-	rightBoundary := changepoint.getBoundary(2) * digitCount
-	midpoint := (changepoint.getBoundary(0) + index) * digitCount
+// returns the left and right boundaries as well as the midpoint as element indices
+func (changepoint Changepoint) getLeftMidpointRight(index int) (int, int, int) {
+	leftBoundary := changepoint.getBoundary(-1)
+	rightBoundary := changepoint.getBoundary(2)
+	midpoint := changepoint.getBoundary(0) + index
 
 	return leftBoundary, midpoint, rightBoundary
 }
