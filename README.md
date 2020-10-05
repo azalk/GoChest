@@ -120,7 +120,7 @@ go build -buildmode=c-shared -o PyChestBuild/GoChest.so CWrapper.go
 Your compiled c-shared library is now situated in the `PyChestBuild` folder. To complete the installation with simply type:
 
 ```
-python3 -m pip i PyChest
+python3 -m pip install .
 ```
 
 The package will now prefer your compiled library over the precompiled libraries.
