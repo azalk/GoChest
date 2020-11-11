@@ -1,6 +1,6 @@
 # Locating distributional changes in piece-wise stationary time-series with long-range dependencies
 
-Implementations of the algorithms proposed in the following two papers.
+Implementations of the change-point estimation algorithms proposed in the following two papers.
 
  - A. Khaleghi, D. Ryabko, Asymptotically Consistent Estimation of the Number of Change Points in Highly Dependent Time Series In Proceedings of the International Conference on Machine Learning, 2014.
 
