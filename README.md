@@ -45,7 +45,7 @@ Now `estimates` is a list of changepoints at least `0.03 * len(sequence)` apart 
 ### Installing
 Install the Go source code by entering the following line in the console:
 ```
-go get github.com/LukasZierahn/GoChest
+go get github.com/azalk/GoChest
 ```
 
 Go will now complain that the directory layout is unexpected. That is because of the duality of it being a Python and Go package and can safely be ignored.
@@ -56,7 +56,7 @@ Go will now complain that the directory layout is unexpected. That is because of
 
 ```go
 import (
-    "github.com/LukasZierahn/GoChest/GoChest"
+    "github.com/azalk/GoChest/GoChest"
 )
 func main() {
     sequence := make([]float64, 0)
@@ -73,7 +73,7 @@ If you do not know the number of generating processes you can call the `ListEsti
 
 ```go
 import (
-    "github.com/LukasZierahn/GoChest/GoChest"
+    "github.com/azalk/GoChest/GoChest"
 )
 
 func main() {
@@ -104,7 +104,7 @@ You should not need to compile the Go code yourself if you just want to use the 
 
 If you want to compile the Go code yourself you need to install [Go](https://golang.org/) first, then clone and enter the repository:
 ```
-git clone https://github.com/LukasZierahn/GoChest
+git clone https://github.com/azalk/GoChest
 cd GoChest
 ```
 
