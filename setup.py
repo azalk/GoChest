@@ -37,6 +37,6 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     ext_modules=cythonize(extensions),
-    packages=['PyChestBuild'],
+    packages=['PyChestBuild', 'PyChest'],
     package_data={'PyChestBuild': [library_path]},
 )
