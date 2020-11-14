@@ -1,2 +1,4 @@
 *.h
 *.c
+man/*
+.Rproj.user
