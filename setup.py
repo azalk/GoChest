@@ -20,7 +20,7 @@ extensions = [
 
 setup(
     name="PyChest",
-    version="0.51",
+    version="0.54",
     license="bsd-3-clause",
     description="Locating Changes in Highly Dependent Data with Unknown Number of Change Points",
     author="Lukas Zierahn",
@@ -37,6 +37,5 @@ setup(
         "Programming Language :: Python :: 3",
     ],
     ext_modules=cythonize(extensions),
-    packages=['PyChestBuild', 'PyChest'],
-    package_data={'PyChestBuild': [library_path]},
+    data_files=[('PyChestBuild', [f"PyChestBuild/{library_path}", "PyChestBuild/identify.py"])],
 )

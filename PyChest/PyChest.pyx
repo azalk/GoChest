@@ -9,11 +9,11 @@ resource_package = os.path.dirname(__file__)
 resource_path = "PyChestBuild/" + get_lib_name()
 
 # If the user has compiled their own shared library, then we are using that one
-if os.path.isfile(os.path.join(resource_package, "PyChestBuild/GoChest.so")):
-    resource_path = "PyChestBuild/GoChest.so"
+if os.path.isfile(os.path.join(resource_package, "../PyChestBuild/GoChest.so")):
+    resource_path = "../PyChestBuild/GoChest.so"
 
-if os.path.isfile(os.path.join(resource_package, "PyChestBuild/GoChest.dll")):
-    resource_path = "PyChestBuild/GoChest.dll"
+if os.path.isfile(os.path.join(resource_package, "../PyChestBuild/GoChest.dll")):
+    resource_path = "../PyChestBuild/GoChest.dll"
 
 
 lib = ctypes.cdll.LoadLibrary(os.path.join(resource_package, resource_path))

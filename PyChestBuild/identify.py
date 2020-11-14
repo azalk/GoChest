@@ -36,6 +36,6 @@ def get_lib_name():
     else:
         raise Exception("""
 There is no pre compiled package for this Operating System.
-Please compile the package from source. You can find instructions here: https://github.com/LukasZierahn/GoChest""")
+Please compile the package from source. You can find instructions here: https://github.com/azalk/GoChest""")
 
     return "GoChest." + name
