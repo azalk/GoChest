@@ -1,0 +1,4 @@
+include *.pyx
+
+include PyChestBuild/*.so
+include PyChestBuild/*.dll

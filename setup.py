@@ -15,12 +15,12 @@ if os.path.isfile("PyChestBuild/GoChest.dll"):
     print("Using found GoChest.dll over precompiled libraries")
 
 extensions = [
-    Extension("PyChest", ["PyChest/PyChest.pyx"])
+    Extension("PyChest", ["PyChest.pyx"])
 ]
 
 setup(
     name="PyChest",
-    version="0.54",
+    version="0.5422",
     license="bsd-3-clause",
     description="Locating Changes in Highly Dependent Data with Unknown Number of Change Points",
     author="Lukas Zierahn",
@@ -36,6 +36,7 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
     ],
+    packages=['PyChestBuild'],
+    include_package_data=True,
     ext_modules=cythonize(extensions),
-    data_files=[('PyChestBuild', [f"PyChestBuild/{library_path}", "PyChestBuild/identify.py"])],
 )
