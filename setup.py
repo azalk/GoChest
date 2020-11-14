@@ -22,7 +22,7 @@ setup(
     name="PyChest",
     version="0.5422",
     license="bsd-3-clause",
-    description="Locating Changes in Highly Dependent Data with Unknown Number of Change Points",
+    description="Locating distributional changes in piece-wise stationary time-series with long-range dependencies",
     author="Lukas Zierahn",
     author_email="lukas@kappa-mm.de",
     url="",
