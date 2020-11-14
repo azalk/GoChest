@@ -7,5 +7,5 @@ Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
 Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies
 License: bsd-3-clause
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Depends: reticulate
