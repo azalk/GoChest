@@ -2,3 +2,10 @@
 *.c
 man/*
 .Rproj.user
+.Rhistory
+.RData
+.idea/
+PyChest.egg-info/
+PyChestBuild/__pycache__/
+dist/
+RChest.Rproj
