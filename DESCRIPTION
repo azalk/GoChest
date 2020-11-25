@@ -5,7 +5,10 @@ Version: 0.5422
 Author: Lukas Zierahn
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
 Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies
-License: bsd-3-clause
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: reticulate
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat
