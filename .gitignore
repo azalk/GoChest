@@ -1,6 +1,5 @@
 *.h
 *.c
-man/*
 .Rproj.user
 .Rhistory
 .RData
