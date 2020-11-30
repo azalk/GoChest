@@ -7,7 +7,7 @@ Implementations of the change-point estimation algorithms proposed in the follow
  - A. Khaleghi, D. Ryabko, Locating Changes in Highly-Dependent Data with an Unknown Number of Change-Points, In Proceedings of Neural Information Processing Systems, 2012.
 
 
-written in Go and distributed in [Python](#python) [R](#R) and [Go](#go).
+written in Go and distributed in [Python](#python), [R](#R) and [Go](#go).
 
 
 ## Python
