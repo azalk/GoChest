@@ -1,5 +1,7 @@
 test_that("changepoints are found correctly", {
 
+  set.seed(0)
+  
   data <- rnorm(750, 0, 1)
   data <- append(data, rnorm(1250, 3, 2))
 

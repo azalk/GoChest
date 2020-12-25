@@ -4,7 +4,7 @@ Title: Locating distributional changes in piece-wise stationary time-series with
 Version: 0.5422
 Author: Lukas Zierahn
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
-Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies
+Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies. We are using an implementation in Go with a strong focus on multithreading.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
