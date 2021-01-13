@@ -10,6 +10,5 @@
 #'
 #' @export
 find_changepoints <- function(sequence, minimum_distance, process_count) {
-  PyChest <- reticulate::import("PyChest")
   PyChest$find_changepoints(sequence, minimum_distance, process_count)
 }

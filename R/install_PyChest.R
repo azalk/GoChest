@@ -1,8 +1,9 @@
-#' init_RChest
+#' install_PyChest
 #'
 #' Initializes the package and installs/Updates PyChest into the local recticulate-Python evnironment
 #'
 #' @export
-init_RChest <- function() {
+install_PyChest <- function() {
+  reticulate::py_install("cython")
   reticulate::py_install("PyChest", pip=TRUE)
 }

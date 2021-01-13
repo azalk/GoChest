@@ -9,6 +9,5 @@
 #'
 #' @export
 list_estimator <- function(sequence, minimum_distance) {
-  PyChest <- reticulate::import("PyChest")
   PyChest$list_estimator(sequence, minimum_distance)
 }
