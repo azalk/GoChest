@@ -3,7 +3,7 @@
 #' Returns the position of changepoints in the sequence
 #'
 #' @param sequence A vector of floats
-#' @param minimum_distance The minimum distance between changepoints as percentage of sequence length
+#' @param minimum_distance A real number between 0 and 1 corresponding to a lower-bound on the minimum normalized length of the stationary segments (as percentage of total sample lengt)
 #'
 #' @return The list of changepoints in order of likelihood
 #'
