@@ -1,6 +1,6 @@
 #' install_PyChest
 #'
-#' Initializes the package and installs/Updates PyChest into the local recticulate-Python evnironment
+#' Initializes the package and installs/updates PyChest into the local reticulate-Python environment
 #'
 #' @export
 install_PyChest <- function() {
