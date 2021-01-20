@@ -1,11 +1,14 @@
 Package: RChest
 Type: Package
 Title: Locating Distributional Changes in Piece-Wise Stationary Time-Series with Long-Range Dependencies
-Version: 1.0
-Author: Lukas Zierahn
+Version: 1.0.0
+Authors@R: c(
+    person("Lukas", "Zierahn", email = "lukas@kappa-mm.de", role = c("cre","aut")),
+    person("Azadeh", "Khaleghi", email = "a.khaleghi@lancaster.ac.uk", role = "aut"))
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
 Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies. We are using an implementation in Go with a strong focus on multithreading.
 URL: https://github.com/azalk/GoChest
+BugReports: https://github.com/azalk/GoChest/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
