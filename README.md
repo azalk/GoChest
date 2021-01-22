@@ -52,10 +52,10 @@ Install the Package by running the following code in any R console:
 ```R
 devtools::install_github("azalk/GoChest")
 library("RChest")
-init_RChest()
+install_PyChest()
 ```
 
-`init_RChest` is used to install PyChest onto your local Python environment, call it to update the PyChest version R uses. You should not need to do this every time you use the R-package. 
+`install_PyChest` is used to install PyChest onto your local Python environment, call it to update the PyChest version R uses. You should not need to do this every time you use the R-package. 
 
 ### How to use
 
