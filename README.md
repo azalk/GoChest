@@ -39,7 +39,7 @@ import PyChest
 estimates = PyChest.list_estimator(sequence, 0.03)
 ```
 
-Now `estimates` is a list of changepoint estimates at least `0.03 * len(sequence)` apart in decreasing order of a `score` associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty.
+Now `estimates` is a list of changepoint estimates at least `0.03 * len(sequence)` apart in decreasing order of a _score_ associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty.
  
 ## R
 ### Installing
@@ -75,7 +75,8 @@ library("RChest")
 estimates <- list_estimator(sequence, 0.03)
 ```
 
-Now `estimates` is a list of changepoints at least `0.03 * length(sequence)` apart in decreasing likelihood. The list can be empty. 
+Now `estimates` is a list of changepoint estimates at least `0.03 * length(sequence)` apart in decreasing order of a _score_ associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty.
+
 
 ## Go
 ### Installing
@@ -120,8 +121,7 @@ func main() {
     estimates = GoChest.ListEstimator(sequence, 0.03)
 }
 ```
-
-Now `estimates` is a slice of changepoints at least `0.03 * len(sequence)` apart in decreasing likelihood. The slice can be empty. 
+Now `estimates` is a list of changepoint estimates at least `0.03 * len(sequence)` apart in decreasing order of a _score_ associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty. 
 
 
 ## How to cite
