@@ -1,7 +1,7 @@
 Package: RChest
 Type: Package
 Title: Locating Distributional Changes in Piece-Wise Stationary Time-Series with Long-Range Dependencies
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Lukas", "Zierahn", email = "lukas@kappa-mm.de", role = c("cre","aut")),
     person("Azadeh", "Khaleghi", email = "a.khaleghi@lancaster.ac.uk", role = "aut"))
