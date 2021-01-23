@@ -1,13 +1,17 @@
+For a CRAN submission we recommend that you fix all NOTEs, WARNINGs and ERRORs.
 ## Test environments
-* local R installation, R 4.0.3
-* ubuntu 16.04 (on travis-ci), R 4.0.3
-* win-builder (devel)
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
 
 ## R CMD check results
+❯ On windows-x86_64-devel (r-devel), ubuntu-gcc-release (r-release), fedora-clang-devel (r-devel)
+  checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Lukas Zierahn <lukas@kappa-mm.de>'
+  
+  New submission
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors ✔ | 0 warnings ✔ | 1 note ✖
 
 
 ## Authors comments
