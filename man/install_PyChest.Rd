@@ -6,6 +6,9 @@
 \usage{
 install_PyChest()
 }
+\value{
+No return value, called to install the PyChest Package
+}
 \description{
 Initializes the package and installs/updates PyChest into the local reticulate-Python environment
 }

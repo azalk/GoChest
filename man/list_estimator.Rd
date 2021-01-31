@@ -12,7 +12,7 @@ list_estimator(sample, minimum_distance)
 \item{minimum_distance}{A real number between 0 and 1 corresponding to a lower-bound on the minimum normalized length of the stationary segments (as percentage of total sample length)}
 }
 \value{
-The list of changepoints in order of likelihood
+The list of changepoints in order of score
 }
 \description{
 Returns the position of changepoints in the sequence

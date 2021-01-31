@@ -1,18 +1,32 @@
-Package: RChest
 Type: Package
-Title: Locating Distributional Changes in Piece-Wise Stationary Time-Series with Long-Range Dependencies
-Version: 1.0.1
-Authors@R: c(
-    person("Lukas", "Zierahn", email = "lukas@kappa-mm.de", role = c("cre","aut")),
-    person("Azadeh", "Khaleghi", email = "a.khaleghi@lancaster.ac.uk", role = "aut"))
+Package: RChest
+Title: Locating Distributional Changes in Highly Dependent Time
+    Series
+Version: 1.0.2
+Authors@R: 
+    c(person(given = "Lukas",
+             family = "Zierahn",
+             role = c("cre", "aut"),
+             email = "lukas@kappa-mm.de"),
+      person(given = "Azadeh",
+             family = "Khaleghi",
+             role = "aut",
+             email = "a.khaleghi@lancaster.ac.uk"))
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
-Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies. We are using an implementation in Go with a strong focus on parallel computation.
+Description: We are using an implementation in Go with a strong
+    focus on parallel computation in order to locate distributional
+    changes in piece-wise stationary time-series with long-range
+    dependencies like suggested by the papers A. Khaleghi, D. Ryabko
+    (2014) <http://proceedings.mlr.press/v32/khaleghi14.html> and A.
+    Khaleghi, D. Ryabko (2012)
+    <https://proceedings.neurips.cc/paper/2012/file/299fb2142d7de959380f91c01c3a293c-Paper.pdf>.
+License: MIT + file LICENSE
 URL: https://github.com/azalk/GoChest
 BugReports: https://github.com/azalk/GoChest/issues
-License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
-Imports: reticulate
-RoxygenNote: 7.1.1
+Imports: 
+    reticulate
 Suggests: 
     testthat
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
