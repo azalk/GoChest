@@ -1,4 +1,4 @@
-# Locating distributional changes in piece-wise stationary time-series with long-range dependencies
+# Locating distributional changes in piece-wise stationary time series with long-range dependencies
 
 Implementations of the change-point estimation algorithms proposed in the following two papers.
 
