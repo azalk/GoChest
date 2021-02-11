@@ -15,5 +15,8 @@ list_estimator(sample, minimum_distance)
 The list of changepoints in order of score
 }
 \description{
-Returns the position of changepoints in the sequence
+Returns the position of changepoints in the sequence. NOTE: PyChest needs to be installed first by calling `install_PyChest'.
+}
+\references{
+\insertRef{khaleghi2012locating}{RChest}
 }

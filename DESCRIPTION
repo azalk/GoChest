@@ -13,18 +13,17 @@ Authors@R:
              role = "aut",
              email = "a.khaleghi@lancaster.ac.uk"))
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
-Description: This package efficiently implements consistent algorithms proposed by A. Khaleghi, D. Ryabko
-    (2014) <http://proceedings.mlr.press/v32/khaleghi14.html> and A.
-    Khaleghi, D. Ryabko (2012)
-    <https://proceedings.neurips.cc/paper/2012/file/299fb2142d7de959380f91c01c3a293c-Paper.pdf>, which estimate distributional 
-    changepoints in piecewise stationary timeseries in the presence of long-range dependencies. The code is written in Go and interfaced with R. 
+Description: This package efficiently implements algorithms which locate multiple distributional changepoints in piecewise stationary timeseries. The algorithms are provably consistent, even in the presence of long-range dependencies. Knowledge of the number of changepoints is not required a-priori. The code is written in Go and interfaced with R. 
 License: GPL (>= 3)
 URL: https://github.com/azalk/GoChest
 BugReports: https://github.com/azalk/GoChest/issues
 Imports: 
-    reticulate
+	reticulate, 
+	Rdpack
+RdMacros: 
+    Rdpack 
 Suggests: 
-    testthat
+    testthat 
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
