@@ -18,7 +18,7 @@ Description: This package efficiently implements consistent algorithms proposed 
     Khaleghi, D. Ryabko (2012)
     <https://proceedings.neurips.cc/paper/2012/file/299fb2142d7de959380f91c01c3a293c-Paper.pdf>, which estimate distributional 
     changepoints in piecewise stationary timeseries in the presence of long-range dependencies. The code is written in Go and interfaced with R. 
-License: MIT + file LICENSE
+License: GPL (>= 3)
 URL: https://github.com/azalk/GoChest
 BugReports: https://github.com/azalk/GoChest/issues
 Imports: 
