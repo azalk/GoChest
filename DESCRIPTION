@@ -18,7 +18,7 @@ Description: Provides algorithms to locate multiple
     algorithms are provably consistent, even in the presence of long-range
     dependencies. Knowledge of the number of change-points is not
     required. The code is written in Go and interfaced with R.
-License: GPL (>= 3)
+License: GPL
 URL: https://github.com/azalk/GoChest
 BugReports: https://github.com/azalk/GoChest/issues
 Imports: 
