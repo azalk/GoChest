@@ -2,7 +2,7 @@ Type: Package
 Package: RChest
 Title: Locating Distributional Changes in Highly Dependent Time
     Series
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: 
     c(person(given = "Lukas",
              family = "Zierahn",
@@ -13,17 +13,21 @@ Authors@R:
              role = "aut",
              email = "a.khaleghi@lancaster.ac.uk"))
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
-Description: This package efficiently implements algorithms which locate multiple distributional changepoints in piecewise stationary timeseries. The algorithms are provably consistent, even in the presence of long-range dependencies. Knowledge of the number of changepoints is not required a-priori. The code is written in Go and interfaced with R. 
+Description: Provides algorithms to locate multiple
+    distributional change-points in piecewise stationary time series. The
+    algorithms are provably consistent, even in the presence of long-range
+    dependencies. Knowledge of the number of change-points is not
+    required. The code is written in Go and interfaced with R.
 License: GPL (>= 3)
 URL: https://github.com/azalk/GoChest
 BugReports: https://github.com/azalk/GoChest/issues
 Imports: 
-	reticulate, 
-	Rdpack
+    reticulate
+Suggests:
+    Rdpack,
+    testthat
 RdMacros: 
-    Rdpack 
-Suggests: 
-    testthat 
+    Rdpack
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
