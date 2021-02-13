@@ -21,10 +21,10 @@ Description: Provides algorithms to locate multiple
 License: GPL
 URL: https://github.com/azalk/GoChest
 BugReports: https://github.com/azalk/GoChest/issues
-Imports: 
+Imports:
+    Rdpack,
     reticulate
 Suggests:
-    Rdpack,
     testthat
 RdMacros: 
     Rdpack
