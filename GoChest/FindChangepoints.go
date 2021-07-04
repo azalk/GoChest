@@ -60,7 +60,7 @@ func FindChangepoints(sequence []float64, minimumDistance float64, processCount 
 	changepoints = ListEstimator(sequence, minimumDistance, wordLength)
 	sort.Ints(changepoints)
 
-	if processCount >= len(changepoints) {
+	if processCount > len(changepoints) {
 		return changepoints
 	}
 
