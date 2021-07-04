@@ -1,6 +1,7 @@
 package GoChest
 
 import (
+	"fmt"
 	"math"
 	"sort"
 	"strconv"
@@ -53,6 +54,7 @@ func getDistance(segment1, segment2 int) float64 {
 }
 
 func FindChangepoints(sequence []float64, minimumDistance float64, processCount int, wordLength int) []int {
+	fmt.Println("Debug Version!")
 	sequenceLength = len(sequence) / wordLength
 
 	changepoints = ListEstimator(sequence, minimumDistance, wordLength)
