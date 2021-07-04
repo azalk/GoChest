@@ -1,4 +1,4 @@
-# Locating distributional changes in piece-wise stationary time-series with long-range dependencies
+# Locating distributional changes in piece-wise stationary time series with long-range dependencies
 
 Implementations of the change-point estimation algorithms proposed in the following two papers.
 
@@ -7,13 +7,13 @@ Implementations of the change-point estimation algorithms proposed in the follow
  - A. Khaleghi, D. Ryabko, Locating Changes in Highly-Dependent Data with an Unknown Number of Change-Points, In Proceedings of Neural Information Processing Systems, 2012.
 
 
-written in Go and distributed in [Go](#go) and [Python](#python).
+written in Go and distributed in [Python](#python), [R](#R) and [Go](#go).
 
 
 ## Python
 ### Installing
 
-The Python package is precompiled for Windows (32/64 bit), MacOs (64 bit) and many Linux (32/64 bit) distributions. If you want to use the code on system for which there are no precompiled binaries like Raspberry Pis or Android phones head to the [Compiling](#compiling-the-go-code) section in the Appendix.
+The Python package is precompiled for Windows (32/64 bit), MacOS (64 bit) and many Linux (32/64 bit) distributions. If you want to use the code on system for which there are no precompiled binaries like Raspberry Pis or Android phones head to the [Compiling](#compiling-the-go-code) section in the Appendix.
 
 If Python is installed on your system simply run the following code
 
@@ -30,7 +30,7 @@ import PyChest
 estimates = PyChest.find_changepoints(sequence, 0.03, 2)
 ```
 
-`estimates` will now be a python list containing a list of changepoints in increasing order. The list can be emtpy. 
+`estimates` will now be a python list containing a list of changepoints in increasing order. The list can be empty. 
 
 If you do not know the number of generating processes you can call the `list_estimator` instead like following
 
@@ -39,11 +39,11 @@ import PyChest
 estimates = PyChest.list_estimator(sequence, 0.03)
 ```
 
-Now `estimates` is a list of changepoints at least `0.03 * len(sequence)` apart in decreasing likelihood. The list can be empty.
+Now `estimates` is a list of changepoint estimates at least `0.03 * len(sequence)` apart in decreasing order of a "score" associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty.
  
 ## R
 ### Installing
-The R implementation uses the Python package which is precompiled for Windows (32/64 bit), MacOs (64 bit) and many Linux (32/64 bit) distributions. If you want to use the code on system for which there are no precompiled binaries like Raspberry Pis or Android phones head to the [Compiling](#compiling-the-go-code) section in the Appendix.
+The R implementation uses the Python package which is precompiled for Windows (32/64 bit), MacOS (64 bit) and many Linux (32/64 bit) distributions. If you want to use the code on system for which there are no precompiled binaries like Raspberry Pis or Android phones head to the [Compiling](#compiling-the-go-code) section in the Appendix.
 
 You will need to have [Python](https://www.python.org/) installed on your system in order to run the R-package.
 
@@ -52,10 +52,10 @@ Install the Package by running the following code in any R console:
 ```R
 devtools::install_github("azalk/GoChest")
 library("RChest")
-init_RChest()
+install_PyChest()
 ```
 
-`init_RChest` is used to install PyChest onto your local Python environment, call it to update the PyChest version R uses. You should not need to do this everytime you use the R-package. 
+`install_PyChest` is used to install PyChest onto your local Python environment, call it to update the PyChest version R uses. You should not need to do this every time you use the R-package. 
 
 ### How to use
 
@@ -66,7 +66,7 @@ library("RChest")
 estimates <- find_changepoints(sequence, 0.03, 2L)
 ```
 
-Now `estimates` will now be a Multi-element vector containing a list of changepoints at least `0.03 * length(sequence)` apart in increasing order. The list can be emtpy. 
+Now `estimates` will now be a Multi-element vector containing a list of changepoints at least `0.03 * length(sequence)` apart in increasing order. The list can be empty. 
 
 If you do not know the number of generating processes you can call the `list_estimator` instead like following
 
@@ -75,7 +75,8 @@ library("RChest")
 estimates <- list_estimator(sequence, 0.03)
 ```
 
-Now `estimates` is a list of changepoints at least `0.03 * length(sequence)` apart in decreasing likelihood. The list can be empty. 
+Now `estimates` is a list of changepoint estimates at least `0.03 * length(sequence)` apart in decreasing order of a "score" associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty.
+
 
 ## Go
 ### Installing
@@ -103,7 +104,7 @@ func main() {
 }
 ```
 
-`estimates` will now be a slice containing a list of changepoints at least `0.03 * len(sequence)` apart in increasing order. The slice can be emtpy. 
+`estimates` will now be a slice containing a list of changepoints at least `0.03 * len(sequence)` apart in increasing order. The slice can be empty. 
 
 If you do not know the number of generating processes you can call the `ListEstimator` instead like following
 
@@ -120,8 +121,7 @@ func main() {
     estimates = GoChest.ListEstimator(sequence, 0.03)
 }
 ```
-
-Now `estimates` is a slice of changepoints at least `0.03 * len(sequence)` apart in decreasing likelihood. The slice can be empty. 
+Now `estimates` is a list of changepoint estimates at least `0.03 * len(sequence)` apart in decreasing order of a "score" associated to each estimate by the algorithm, which reflects the quality of the estimate; the list can be empty. 
 
 
 ## How to cite
@@ -138,7 +138,7 @@ If you use this package, please cite the following papers:
 ### Compiling the Go code
 You should not need to compile the Go code yourself if you just want to use the package on Windows, MacOS or a common Unix distribution, you can find instructions how to install the code here: [Python](#python).
 
-If you want to compile the Go code yourself you need to install [Go](https://golang.org/) first, then clone and enter the repository by typing the following code into a commandline:
+If you want to compile the Go code yourself you need to install [Go](https://golang.org/) first, then clone and enter the repository by typing the following code into a command line:
 ```
 git clone https://github.com/azalk/GoChest
 cd GoChest
@@ -162,7 +162,7 @@ pip install .
 The package will now prefer your compiled library over the precompiled libraries.
 
 #### Compiling for R
-If you want to use the R-package with your own compiled binary, first install the R-Package by typing the following into an R-Commandline:
+If you want to use the R-package with your own compiled binary, first install the R-Package by typing the following into an R-command-line:
 
 ```R
 devtools::install_github("azalk/GoChest")

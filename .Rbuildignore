@@ -16,3 +16,5 @@ buildGoUnix.sh
 buildGoWindows.sh
 setup.py
 ^LICENSE\.md$
+^cran-comments\.md$
+^CRAN-RELEASE$

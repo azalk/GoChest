@@ -1,14 +1,33 @@
-Package: RChest
 Type: Package
-Title: Locating distributional changes in piece-wise stationary time-series with long-range dependencies
-Version: 0.5422
-Author: Lukas Zierahn
+Package: RChest
+Title: Locating Distributional Changes in Highly Dependent Time
+    Series
+Version: 1.0.3
+Authors@R: 
+    c(person(given = "Lukas",
+             family = "Zierahn",
+             role = c("cre", "aut"),
+             email = "lukas@kappa-mm.de"),
+      person(given = "Azadeh",
+             family = "Khaleghi",
+             role = "aut",
+             email = "a.khaleghi@lancaster.ac.uk"))
 Maintainer: Lukas Zierahn <lukas@kappa-mm.de>
-Description: Locating distributional changes in piece-wise stationary time-series with long-range dependencies
-License: MIT + file LICENSE
+Description: Provides algorithms to locate multiple
+    distributional change-points in piecewise stationary time series. The
+    algorithms are provably consistent, even in the presence of long-range
+    dependencies. Knowledge of the number of change-points is not
+    required. The code is written in Go and interfaced with R.
+License: GPL
+URL: https://github.com/azalk/GoChest
+BugReports: https://github.com/azalk/GoChest/issues
+Imports:
+    Rdpack,
+    reticulate
+Suggests:
+    testthat
+RdMacros: 
+    Rdpack
 Encoding: UTF-8
 LazyData: true
-Imports: reticulate
 RoxygenNote: 7.1.1
-Suggests: 
-    testthat

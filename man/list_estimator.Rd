@@ -4,16 +4,19 @@
 \alias{list_estimator}
 \title{list_estimator}
 \usage{
-list_estimator(sequence, minimum_distance)
+list_estimator(sample, minimum_distance)
 }
 \arguments{
-\item{sequence}{A vector of floats}
+\item{sample}{A vector of floats corresponding to the piecewise stationary sample where the retrospective changes are to be sought}
 
-\item{minimum_distance}{The minimum distance between changepoints as percentage of sequence length}
+\item{minimum_distance}{A real number between 0 and 1 corresponding to a lower-bound on the minimum normalized length of the stationary segments (as percentage of total sample length)}
 }
 \value{
-The list of changepoints in order of likelihood
+The list of changepoints in order of score
 }
 \description{
-Returns the position of changepoints in the sequence
+Returns the position of changepoints in the sequence. NOTE: PyChest needs to be installed first by calling `install_PyChest'.
+}
+\references{
+\insertRef{khaleghi2012locating}{RChest}
 }
