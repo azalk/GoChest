@@ -44,7 +44,7 @@ func getDistance(segment1, segment2 int) float64 {
 		}
 
 		// Add the computed distance to the map
-		distanceMap[getKeyString(segment1, segment2)] = distance
+		// distanceMap[getKeyString(segment1, segment2)] = distance
 		return distance
 	} else {
 		return distanceMap[getKeyString(segment1, segment2)]
