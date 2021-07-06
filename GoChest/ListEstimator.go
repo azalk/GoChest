@@ -2,7 +2,7 @@ package GoChest
 
 import (
 	ahocorasick "github.com/BobuSumisu/aho-corasick"
-	"github.com/cheggaaa/pb"
+	"github.com/schollz/progressbar"
 	"math"
 	"sync"
 )
@@ -17,21 +17,20 @@ func getSegmentScores() [][]float64 {
 		}
 	}
 
-	bar := pb.New(segmentCount).Prefix("Computing Segment Scores: ")
-	bar.AlwaysUpdate = true
+	bar := progressbar.Default(int64(segmentCount),	"Computing Segment Scores: ")
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(segmentCount)
 	for t := 0; t < 2; t++ {
 		for level := 0; level < discreteLevel; level++ {
 			for boundary := 1; boundary < len(boundaries[t])-2; boundary++ {
-				func(t, level, boundary int) {
+				go func(t, level, boundary int) {
 					defer waitGroup.Done()
 					leftBoundary := boundaries[t][boundary]
 					rightBoundary := boundaries[t][boundary+1]
 					midpoint := leftBoundary + int(float64(boundaries[t][boundary+1]-boundaries[t][boundary])*0.5)
 
 					scores[t][level][boundary-1] = discreteDistanceMidpoint(level, leftBoundary, midpoint, rightBoundary)
-					bar.Increment()
+					bar.Add(1)
 				}(t, level, boundary)
 			}
 		}
@@ -69,8 +68,7 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 	boundaries[0] = getBoundaries(len(sequence) / wordLength, minimumDistance/3.0, 0)
 	boundaries[1] = getBoundaries(len(sequence) / wordLength, minimumDistance/3.0, 1)
 
-	bar := pb.New(discreteLevel).Prefix("Generating Tries: ")
-	bar.AlwaysUpdate = true
+	bar := progressbar.Default(int64(discreteLevel), "Generating Tries: ")
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(discreteLevel)
 	for level := 0; level < discreteLevel; level++ {
@@ -78,7 +76,7 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 			defer waitGroup.Done()
 			discreteSequence[level] = discretizeSequence(sequence, level)
 			trie[level] = buildTrie(discreteSequence[level], level)
-			bar.Increment()
+			bar.Add(1)
 		}(level)
 	}
 	waitGroup.Wait()
@@ -129,8 +127,7 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 	}
 
 	segmentLength := changepoints[0].getSegmentLength()
-	bar = pb.New(segmentLength * discreteLevel * len(changepoints)).Prefix("Finding Exact Changepoints: ")
-	bar.AlwaysUpdate = true
+	bar = progressbar.Default(int64(segmentLength*discreteLevel*len(changepoints)), "Finding Exact Changepoints: ")
 
 	exactChangepointsScores := make([][]float64, segmentLength)
 	for changepointIndex, changepoint := range changepoints {
@@ -146,9 +143,9 @@ func ListEstimator(sequence []float64, minimumDistance float64, wordLengthInp in
 				go func(i, level, leftBoundary, midpoint, rightBoundary int) {
 					defer waitGroup.Done()
 					exactChangepointsScores[i][level] = discreteDistanceMidpoint(level, leftBoundary, midpoint, rightBoundary)
-					bar.Increment()
 				}(i, level, leftBoundary, midpoint, rightBoundary)
 			}
+			bar.Add(discreteLevel)
 		}
 
 		waitGroup.Wait()
