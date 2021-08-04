@@ -34,13 +34,16 @@ func getKeyString(segment1, segment2 int) string {
 	return strconv.Itoa(segment2) + "/" + strconv.Itoa(segment1)
 }
 
-func getDistance(segment1, segment2 int) float64 {
+func getDistance(sequence []float64, segment1, segment2 int) float64 {
 	if _, ok := distanceMap[getKeyString(segment1, segment2)]; !ok {
 		distance := 0.0
 
 		// The distance is not cached, we need to compute it
 		for level := 0; level < discreteLevel; level++ {
-			distance += discreteDistance(level, getLeftRightOfSegment(segment1), getLeftRightOfSegment(segment2))
+			discreteSequence, digitCount := discretizeSequence(sequence, level)
+			trie := buildTrie(discreteSequence, digitCount)
+
+			distance += discreteDistance(level, getLeftRightOfSegment(segment1), getLeftRightOfSegment(segment2), trie, discreteSequence, digitCount)
 		}
 
 		// Add the computed distance to the map
@@ -78,7 +81,7 @@ func FindChangepoints(sequence []float64, minimumDistance float64, processCount 
 			// We look for the smallest distance of that segment to any cluster center
 			minDistance := math.MaxFloat64
 			for _, centerPosition := range clusterCenter {
-				distance := getDistance(i, centerPosition)
+				distance := getDistance(sequence, i, centerPosition)
 
 				if distance < minDistance {
 					minDistance = distance
@@ -103,7 +106,7 @@ func FindChangepoints(sequence []float64, minimumDistance float64, processCount 
 		minDistance := math.MaxFloat64
 
 		for _, centerPosition := range clusterCenter {
-			distance := getDistance(i, centerPosition)
+			distance := getDistance(sequence, i, centerPosition)
 
 			if distance < minDistance {
 				minDistance = distance

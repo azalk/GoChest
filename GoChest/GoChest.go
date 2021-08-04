@@ -24,10 +24,6 @@ const maxDiscreteLevel = 5
 var wordLength = 1
 
 var discreteLevel int
-
-var trie []*ahocorasick.Trie
-var discreteSequence [][]byte
-var digitCount []int
 var boundaries [][]int
 
 func min(a, b int) int {
@@ -84,7 +80,7 @@ func getDiscreteLevel(sequence []float64) int {
 	return max(-int(math.Log2(smallestDifference)), 1)
 }
 
-func discretizeSequence(sequence []float64, level int) []byte {
+func discretizeSequence(sequence []float64, level int) ([]byte, int) {
 	// we discretize the sequence by characters, not by elements
 
 	binMap := make(map[int]struct{})
@@ -113,22 +109,21 @@ func discretizeSequence(sequence []float64, level int) []byte {
 		copy(output[i*digitsPerCharacter:(i+1)*digitsPerCharacter], byteSequence[:digitsPerCharacter+1])
 	}
 
-	digitCount[level] = digitsPerCharacter * wordLength
-
-	return output
+	digitCount := digitsPerCharacter * wordLength
+	return output, digitCount
 }
 
-func buildTrie(discreteSequence []byte, level int) *ahocorasick.Trie {
+func buildTrie(discreteSequence []byte, digitCount int) *ahocorasick.Trie {
 	trieBuilder := ahocorasick.NewTrieBuilder()
 
 	// we divide the discreteSequence we are getting by the digitCount to get the amount of elements
-	maxPatternLen := int(math.Log(float64(len(discreteSequence)) / float64(digitCount[level])))
+	maxPatternLen := int(math.Log(float64(len(discreteSequence)) / float64(digitCount)))
 
-	elementsInSequence := len(discreteSequence)/digitCount[level]
+	elementsInSequence := len(discreteSequence)/digitCount
 
 	for m := 1; m < min(elementsInSequence, maxPatternLen)+1; m++ {
 		for j := 0; j < elementsInSequence - (m + 1); j += 1 {
-			trieBuilder.AddPattern(discreteSequence[j * digitCount[level] : (j + m) * digitCount[level]])
+			trieBuilder.AddPattern(discreteSequence[j * digitCount : (j + m) * digitCount])
 		}
 	}
 
@@ -137,12 +132,12 @@ func buildTrie(discreteSequence []byte, level int) *ahocorasick.Trie {
 
 // gets the distance between two segments of the discreteSequence
 // the segment indices are element indices
-func discreteDistance(level int, segment1, segment2 [2]int) float64 {
+func discreteDistance(level int, segment1, segment2 [2]int, trie *ahocorasick.Trie, discreteSequence []byte, digitCount int) float64 {
 
 	matches := make([][]*ahocorasick.Match, 2)
 
-	matches[0] = trie[level].Match(discreteSequence[level][segment1[0] * digitCount[level]:segment1[1] * digitCount[level]])
-	matches[1] = trie[level].Match(discreteSequence[level][segment2[0] * digitCount[level]:segment2[1] * digitCount[level]])
+	matches[0] = trie.Match(discreteSequence[segment1[0] * digitCount:segment1[1] * digitCount])
+	matches[1] = trie.Match(discreteSequence[segment2[0] * digitCount:segment2[1] * digitCount])
 
 	counts := make(map[string][]int)
 	for t := 0; t < 2; t++ {
@@ -160,7 +155,7 @@ func discreteDistance(level int, segment1, segment2 [2]int) float64 {
 	output := 0.0
 	frequencies := make([]float64, 2)
 	for key, count := range counts {
-		keywordLength := len(key) / digitCount[level]
+		keywordLength := len(key) / digitCount
 
 		for i := 0; i < 2; i++ {
 			frequencies[i] = float64(count[i]) / float64(sequenceLength[i]-keywordLength+1)
@@ -173,6 +168,6 @@ func discreteDistance(level int, segment1, segment2 [2]int) float64 {
 	return output * math.Pow(2, -float64(level+1))
 }
 
-func discreteDistanceMidpoint(level, leftBoundary, midPoint, rightBoundary int) float64 {
-	return discreteDistance(level, [2]int{leftBoundary, midPoint}, [2]int{midPoint, rightBoundary})
+func discreteDistanceMidpoint(level, leftBoundary, midPoint, rightBoundary int, trie *ahocorasick.Trie, discreteSequence []byte, digitCount int) float64 {
+	return discreteDistance(level, [2]int{leftBoundary, midPoint}, [2]int{midPoint, rightBoundary}, trie, discreteSequence, digitCount)
 }
