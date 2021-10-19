@@ -162,10 +162,10 @@ func discreteDistance(level int, segment1, segment2 [2]int, trie *ahocorasick.Tr
 		}
 
 		adjustedCountDifference := math.Abs(frequencies[0] - frequencies[1])
-		output += adjustedCountDifference * math.Pow(2, -float64(keywordLength))
+		output += adjustedCountDifference * math.Pow(2, -float64(2 * keywordLength * (level+1)))
 	}
 
-	return output * math.Pow(2, -float64(level+1))
+	return output
 }
 
 func discreteDistanceMidpoint(level, leftBoundary, midPoint, rightBoundary int, trie *ahocorasick.Trie, discreteSequence []byte, digitCount int) float64 {
