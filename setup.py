@@ -21,7 +21,7 @@ extensions = [
 setup(
     name="PyChest",
     version="1.21",
-    license="bsd-3-clause",
+    license="GPLv3+",
     description="Locating distributional changes in piece-wise stationary time-series with long-range dependencies",
     author="Lukas Zierahn",
     author_email="lukas@kappa-mm.de",
@@ -33,7 +33,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Programming Language :: Python :: 3",
     ],
     packages=['PyChestBuild'],
