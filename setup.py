@@ -20,7 +20,7 @@ extensions = [
 
 setup(
     name="PyChest",
-    version="1.21",
+    version="1.22",
     license="GPLv3+",
     description="Locating distributional changes in piece-wise stationary time-series with long-range dependencies",
     author="Lukas Zierahn",
